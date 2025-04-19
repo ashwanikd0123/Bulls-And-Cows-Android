@@ -13,15 +13,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
+            app:layout_constraintGuide_percent="0.05" />
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="monospace"
             android:text="Bulls and Cows"
             android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -30,10 +32,11 @@
             android:id="@+id/editTextText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
+            android:fontFamily="casual"
             android:hint="enter number"
-            android:inputType="text"
+            android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,14 +44,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_rec_view" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/input_rec_view"
-                android:layout_width="0dp"
-                android:layout_height="220dp"
-                android:layout_marginTop="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_text" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/input_rec_view"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
         <Button
             android:id="@+id/submit_button"
@@ -56,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:elevation="8dp"
+            android:fontFamily="casual"
             android:text="Submit"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:elevation="8dp"
+            android:fontFamily="casual"
             android:text="End Game"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"

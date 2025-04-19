@@ -1,6 +1,7 @@
 package com.example.bullsandcows
 
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,14 @@ class GameFragment : Fragment() {
         viewModel = ViewModelProvider(this, GameSessionViewModelFactory()).get(GameSessionViewModel::class.java)
         viewModel.generateTarget()
 
+        binding.editTextText.setOnKeyListener({
+                v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                binding.submitButton.performClick()
+            }
+            false
+        })
+
         setSubmitButton()
         setEndGameButton()
         setRecyclerView()
@@ -37,15 +46,16 @@ class GameFragment : Fragment() {
             val guess = binding.editTextText.text.toString()
             if (!BullsAndCowsUtil.isValidGuess(guess)) {
                 Toast.makeText(context, "Invalid guess", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            } else {
+                if (viewModel.submitGuess(guess)) {
+                    val res = Bundle()
+                    res.putBoolean("pass", true)
+                    res.putInt("guess_count", viewModel.getGuessCount())
+                    res.putString("target", viewModel.getTargetNumber())
+                    it.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
+                }
             }
-            if (viewModel.submitGuess(guess)) {
-                val res = Bundle()
-                res.putBoolean("pass", true)
-                res.putInt("guess_count", viewModel.getGuessCount())
-                res.putString("target", viewModel.getTargetNumber())
-                it.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
-            }
+            binding.editTextText.setText("")
         }
     }
 
