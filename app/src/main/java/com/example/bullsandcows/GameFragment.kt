@@ -1,7 +1,6 @@
 package com.example.bullsandcows
 
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,15 +13,15 @@ import com.example.bullsandcows.databinding.FragmentGameBinding
 
 
 class GameFragment : Fragment() {
-    lateinit var binding: FragmentGameBinding
-    lateinit var viewModel: GameSessionViewModel
+    private lateinit var binding: FragmentGameBinding
+    private lateinit var viewModel: GameSessionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGameBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this, GameSessionViewModelFactory()).get(GameSessionViewModel::class.java)
+        viewModel = ViewModelProvider(this, GameSessionViewModelFactory())[GameSessionViewModel::class.java]
         viewModel.generateTarget()
 
         binding.submitButton.setOnClickListener{
@@ -39,13 +38,13 @@ class GameFragment : Fragment() {
         return binding.root
     }
 
-    fun clearInput() {
+    private fun clearInput() {
         binding.editTextText.setText("")
     }
 
-    fun submitText(v: View) {
+    private fun submitText(v: View) {
         val guess = binding.editTextText.text.toString()
-        if (!BullsAndCowsUtil.isValidGuess(guess)) {
+        if (!BullsAndCowsHelper.isValidGuess(guess)) {
             Toast.makeText(context, "Invalid guess", Toast.LENGTH_SHORT).show()
         } else {
             if (viewModel.submitGuess(guess)) {
@@ -58,7 +57,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    fun endGame(v: View) {
+    private fun endGame(v: View) {
         val res = Bundle()
         res.putBoolean("pass", false)
         res.putInt("guess_count", viewModel.getGuessCount())
@@ -66,10 +65,10 @@ class GameFragment : Fragment() {
         v.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
     }
 
-    fun setRecyclerView() {
+    private fun setRecyclerView() {
         binding.inputRecView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.inputRecView.adapter = GameGuessListAdapter()
-        viewModel.lastGuess.observe(viewLifecycleOwner) {
+        viewModel.observeLastGuess(viewLifecycleOwner) {
             val adapter = binding.inputRecView.adapter as GameGuessListAdapter
             adapter.addGuess(it)
             binding.inputRecView.scrollToPosition(adapter.itemCount - 1)

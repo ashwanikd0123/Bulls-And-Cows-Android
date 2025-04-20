@@ -10,12 +10,12 @@ import androidx.navigation.findNavController
 import com.example.bullsandcows.databinding.FragmentResultBinding
 
 class ResultFragment : Fragment() {
-    lateinit var binding: FragmentResultBinding
+    private lateinit var binding: FragmentResultBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentResultBinding.inflate(inflater, container, false)
         val passed = arguments?.getBoolean("pass", false)?: false
         val guessCount = arguments?.getInt("guess_count", -1)?: -1

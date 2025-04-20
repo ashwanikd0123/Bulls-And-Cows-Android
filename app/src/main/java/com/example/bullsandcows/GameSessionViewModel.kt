@@ -1,15 +1,21 @@
 package com.example.bullsandcows
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 data class Guess(val guess: String, val bulls: Int, val cows: Int)
 
 class GameSessionViewModel : ViewModel() {
-    val guessList = mutableListOf<Guess>()
-    val lastGuess = MutableLiveData<Guess>()
-    lateinit var target: String
+    private val guessList = mutableListOf<Guess>()
+    private val lastGuess = MutableLiveData<Guess>()
+    private lateinit var target: String
+
+    fun observeLastGuess(lifecycleOwner: LifecycleOwner, observer: Observer<Guess>) {
+        lastGuess.observe(lifecycleOwner, observer)
+    }
 
     fun getGuessCount(): Int {
         return guessList.size
@@ -19,7 +25,7 @@ class GameSessionViewModel : ViewModel() {
         if (target == guess) {
             return true
         }
-        val bc = BullsAndCowsUtil.getBullsAndCows(guess, target)
+        val bc = BullsAndCowsHelper.getBullsAndCows(guess, target)
         val guessVal = Guess(guess, bc[0], bc[1])
         guessList.add(guessVal)
         lastGuess.value = guessVal

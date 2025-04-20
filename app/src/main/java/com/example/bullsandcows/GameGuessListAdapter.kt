@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.bullsandcows.databinding.SimpleViewItemBinding
 
-class GameGuessListAdapter() : Adapter<GameGuessListAdapter.GameListViewHolder>() {
+class GameGuessListAdapter : Adapter<GameGuessListAdapter.GameListViewHolder>() {
     val guessList = mutableListOf<Guess>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListViewHolder {

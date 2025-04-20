@@ -1,6 +1,6 @@
 package com.example.bullsandcows
 
-class BullsAndCowsUtil {
+class BullsAndCowsHelper {
     companion object {
         fun getBullsAndCows(guess: String, target: String): List<Int> {
             val secretCount = mutableMapOf<Char, Int>()
