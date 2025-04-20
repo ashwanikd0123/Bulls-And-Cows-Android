@@ -14,7 +14,6 @@ import com.example.bullsandcows.databinding.FragmentGameBinding
 
 
 class GameFragment : Fragment() {
-
     lateinit var binding: FragmentGameBinding
     lateinit var viewModel: GameSessionViewModel
 
@@ -26,47 +25,45 @@ class GameFragment : Fragment() {
         viewModel = ViewModelProvider(this, GameSessionViewModelFactory()).get(GameSessionViewModel::class.java)
         viewModel.generateTarget()
 
-        binding.editTextText.setOnKeyListener({
-                v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                binding.submitButton.performClick()
-            }
-            false
-        })
+        binding.submitButton.setOnClickListener{
+            submitText(it)
+            clearInput()
+        }
 
-        setSubmitButton()
-        setEndGameButton()
+        binding.endGameButton.setOnClickListener {
+            endGame(it)
+        }
+
         setRecyclerView()
 
         return binding.root
     }
 
-    fun setSubmitButton() {
-        binding.submitButton.setOnClickListener{
-            val guess = binding.editTextText.text.toString()
-            if (!BullsAndCowsUtil.isValidGuess(guess)) {
-                Toast.makeText(context, "Invalid guess", Toast.LENGTH_SHORT).show()
-            } else {
-                if (viewModel.submitGuess(guess)) {
-                    val res = Bundle()
-                    res.putBoolean("pass", true)
-                    res.putInt("guess_count", viewModel.getGuessCount())
-                    res.putString("target", viewModel.getTargetNumber())
-                    it.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
-                }
+    fun clearInput() {
+        binding.editTextText.setText("")
+    }
+
+    fun submitText(v: View) {
+        val guess = binding.editTextText.text.toString()
+        if (!BullsAndCowsUtil.isValidGuess(guess)) {
+            Toast.makeText(context, "Invalid guess", Toast.LENGTH_SHORT).show()
+        } else {
+            if (viewModel.submitGuess(guess)) {
+                val res = Bundle()
+                res.putBoolean("pass", true)
+                res.putInt("guess_count", viewModel.getGuessCount())
+                res.putString("target", viewModel.getTargetNumber())
+                v.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
             }
-            binding.editTextText.setText("")
         }
     }
 
-    fun setEndGameButton() {
-        binding.endGameButton.setOnClickListener {
-            val res = Bundle()
-            res.putBoolean("pass", false)
-            res.putInt("guess_count", viewModel.getGuessCount())
-            res.putString("target", viewModel.getTargetNumber())
-            it.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
-        }
+    fun endGame(v: View) {
+        val res = Bundle()
+        res.putBoolean("pass", false)
+        res.putInt("guess_count", viewModel.getGuessCount())
+        res.putString("target", viewModel.getTargetNumber())
+        v.findNavController().navigate(R.id.action_gameFragment_to_resultFragment, res)
     }
 
     fun setRecyclerView() {
@@ -78,5 +75,4 @@ class GameFragment : Fragment() {
             binding.inputRecView.scrollToPosition(adapter.itemCount - 1)
         }
     }
-
 }
